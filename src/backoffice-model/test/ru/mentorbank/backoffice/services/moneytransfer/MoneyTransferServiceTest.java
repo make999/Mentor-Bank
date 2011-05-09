@@ -54,14 +54,20 @@ public class MoneyTransferServiceTest extends AbstractSpringTest {
 		
 		transreq.setSrcAccount(srcac);
 		transreq.setDstAccount(dstac);
-		
+
+		moneyTransferService.setAccountService(mockedAcService);
+		moneyTransferService.setOperationDao(mockedOpDao);
+		moneyTransferService.setStopListService(mockedStService);
+				
+                when(mockedAcService.verifyBalance(srcac)).thenReturn(true);
+
 		StlistInfo = new StopListInfo();
 		StlistInfo.setStatus(StopListStatus.OK);
 	}
 
 	@Test
 	public void transfer() throws TransferException, OperationDaoException {
-		fail("not implemented yet");
+		//fail("not implemented yet");
 		// TODO: ���������� ��������������, ��� ��� �������� �������� ���
 		// �������� � ���������� ��� ����������� ������ ��������
 		// ����� ������� ����������������� ���������
@@ -74,7 +80,7 @@ public class MoneyTransferServiceTest extends AbstractSpringTest {
 		// verify(mockedStopListService).getJuridicalStopListInfo(null);
 		// verify(mockedAccountService).verifyBalance(null);
 
-                when(mockedAcService.verifyBalance(srcac)).thenReturn(true);
+                
 		when(mockedStService.getJuridicalStopListInfo(any(JuridicalStopListRequest.class))).thenReturn(StlistInfo);
 		when(mockedStService.getPhysicalStopListInfo(any(PhysicalStopListRequest.class))).thenReturn(StlistInfo);
 		
