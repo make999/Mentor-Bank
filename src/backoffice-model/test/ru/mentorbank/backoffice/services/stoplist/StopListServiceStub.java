@@ -16,7 +16,7 @@ public class StopListServiceStub implements StopListService {
 	public StopListInfo getJuridicalStopListInfo(
 			JuridicalStopListRequest request) {
 		StopListInfo stopListInfo = new StopListInfo();
-		stopListInfo.setComment("Комментарий");
+		stopListInfo.setComment("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 		if (INN_FOR_OK_STATUS.equals(request.getInn())){			
 			stopListInfo.setStatus(StopListStatus.OK);
 		} else if (INN_FOR_STOP_STATUS.equals(request.getInn())) {
@@ -29,7 +29,17 @@ public class StopListServiceStub implements StopListService {
 
 	@Override
 	public StopListInfo getPhysicalStopListInfo(PhysicalStopListRequest request) {
-		//TODO: Реализовать
+		//TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                StopListInfo StListInfo = new StopListInfo();
+		StListInfo.setComment("Comments");
+		if(DOC_NUM_FOR_OK_STATUS.equals(request.getDocumentNumber()) &&                        DOC_SER_FOR_OK_STATUS.equals(request.getDocumentSeries()))
+			StListInfo.setStatus(StopListStatus.OK);
+		else if (DOC_NUM_FOR_STOP_STATUS.equals(request.getDocumentNumber()))
+			StListInfo.setStatus(StopListStatus.STOP);
+		else
+			StListInfo.setStatus(StopListStatus.ASKSECURITY);
+		
+		return StListInfo;
 		return null;
 	}
 
