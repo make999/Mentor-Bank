@@ -5,9 +5,30 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
 
+
+import ru.mentorbank.backoffice.model.Operation;
+import ru.mentorbank.backoffice.model.stoplist.JuridicalStopListRequest;
+import ru.mentorbank.backoffice.model.stoplist.PhysicalStopListRequest;
+import ru.mentorbank.backoffice.model.stoplist.StopListInfo;
+import ru.mentorbank.backoffice.model.stoplist.StopListStatus;
+import ru.mentorbank.backoffice.model.transfer.AccountInfo;
+import ru.mentorbank.backoffice.model.transfer.JuridicalAccountInfo;
+import ru.mentorbank.backoffice.model.transfer.PhysicalAccountInfo;
+import ru.mentorbank.backoffice.model.transfer.TransferRequest;
 import ru.mentorbank.backoffice.services.moneytransfer.exceptions.TransferException;
+import ru.mentorbank.backoffice.services.stoplist.StopListService;
+import ru.mentorbank.backoffice.services.stoplist.StopListServiceStub;
 import ru.mentorbank.backoffice.test.AbstractSpringTest;
+import ru.mentorbank.backoffice.services.accounts.AccountService;
+import ru.mentorbank.backoffice.services.accounts.AccountServiceBean;
+import ru.mentorbank.backoffice.dao.OperationDao;
+import ru.mentorbank.backoffice.dao.exception.OperationDaoException;
+
 
 public class MoneyTransferServiceTest extends AbstractSpringTest {
 
