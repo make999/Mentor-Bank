@@ -1,7 +1,11 @@
 package ru.mentorbank.backoffice.services.moneytransfer;
 
 import ru.mentorbank.backoffice.dao.OperationDao;
+import ru.mentorbank.backoffice.dao.exception.OperationDaoException;
+import ru.mentorbank.backoffice.model.Account;
+import ru.mentorbank.backoffice.model.Operation;
 import ru.mentorbank.backoffice.model.stoplist.JuridicalStopListRequest;
+import ru.mentorbank.backoffice.model.stoplist.PhysicalStopListRequest;
 import ru.mentorbank.backoffice.model.stoplist.StopListInfo;
 import ru.mentorbank.backoffice.model.stoplist.StopListStatus;
 import ru.mentorbank.backoffice.model.transfer.AccountInfo;
@@ -12,6 +16,7 @@ import ru.mentorbank.backoffice.services.accounts.AccountService;
 import ru.mentorbank.backoffice.services.moneytransfer.exceptions.TransferException;
 import ru.mentorbank.backoffice.services.stoplist.StopListService;
 
+
 public class MoneyTransferServiceBean implements MoneyTransferSerice {
 
 	public static final String LOW_BALANCE_ERROR_MESSAGE = "Can not transfer money, because of low balance in the source account";
@@ -20,11 +25,11 @@ public class MoneyTransferServiceBean implements MoneyTransferSerice {
 	private OperationDao operationDao;
 
 	public void transfer(TransferRequest request) throws TransferException {
-		// Создаём новый экземпляр внутреннего класса, для того, чтобы можно
-		// было хранить в состоянии объекта информацию по каждому запросу.
-		// Так как MoneyTransferServiceBean конфигурируется как singleton
-		// scoped, то в нём нельзя хранить состояние уровня запроса из-за
-		// проблем параллельного доступа.
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+		// пїЅпїЅпїЅ пїЅпїЅпїЅ MoneyTransferServiceBean пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ singleton
+		// scoped, пїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ-пїЅпїЅ
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 		new MoneyTransfer(request).transfer();
 	}
 
@@ -47,12 +52,12 @@ public class MoneyTransferServiceBean implements MoneyTransferSerice {
 				removeSuccessfulOperation();
 			} else
 				throw new TransferException(
-						"Невозможно сделать перевод. Необходимо ручное вмешательство.");
+						"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
 		}
 
 		/**
-		 * Если операция перевода прошла, то её нужно удалить из таблицы
-		 * операций для ручного вмешательства
+		 * пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		 */
 		private void removeSuccessfulOperation() {
 
@@ -64,13 +69,31 @@ public class MoneyTransferServiceBean implements MoneyTransferSerice {
 		}
 
 		private void saveOperation() {
-			// TODO: Необходимо сделать вызов операции saveOperation и сделать
-			// соответствующий тест вызова операции operationDao.saveOperation()
+			// TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ saveOperation пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ operationDao.saveOperation()
+	                Operation op = new Operation();
+			
+			Account srcac = new Account();
+			Account dstac = new Account();
+			
+			srcac.setAccountNumber(request.getSrcAccount().getAccountNumber());
+			dstac.setAccountNumber(request.getDstAccount().getAccountNumber());
+			
+			op.setSrcAccount(srcac);
+			op.setDstAccount(dstac);
+			
+			try {
+				operationDao.saveOperation(op);
+			}
+			catch(OperationDaoException ee) {
+				throw new TransferException(ee.getMessage());
+			}
+
 		}
 
 		private void transferDo() throws TransferException {
-			// Эту операцию пока не реализовавем. Она должна вызывать
-			// CDCMoneyTransferServiceConsumer которого ещё нет
+			// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			// CDCMoneyTransferServiceConsumer пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ
 		}
 
 		private boolean isStopListInfoOK() {
@@ -90,7 +113,18 @@ public class MoneyTransferServiceBean implements MoneyTransferSerice {
 						.getJuridicalStopListInfo(request);
 				return stopListInfo;
 			} else if (accountInfo instanceof PhysicalAccountInfo) {
-				// TODO: Сделать вызов stopListService для физических лиц
+				// TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ stopListService пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+	                        PhysicalAccountInfo physac = (PhysicalAccountInfo) accountInfo;
+				PhysicalStopListRequest req = new PhysicalStopListRequest();
+				
+				req.setDocumentNumber(physac.getDocumentNumber());
+				req.setDocumentSeries(physac.getDocumentSeries());
+				req.setFirstname(physac.getFirstname());
+				req.setLastname(physac.getLastname());
+				req.setMiddlename(physac.getMiddlename());
+				
+				StopListInfo stlst = stopListService.getPhysicalStopListInfo(req);
+				return stlst;
 			}
 			return null;
 		}
@@ -104,7 +138,7 @@ public class MoneyTransferServiceBean implements MoneyTransferSerice {
 		}
 
 		private void verifySrcBalance() throws TransferException {
-			if (!accountService.verifyBalance(request.getDstAccount()))
+			if (!accountService.verifyBalance(request.getSrcAccount()))
 				throw new TransferException(LOW_BALANCE_ERROR_MESSAGE);
 		}
 	}
