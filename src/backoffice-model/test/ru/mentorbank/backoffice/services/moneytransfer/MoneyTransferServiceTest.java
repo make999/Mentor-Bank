@@ -16,14 +16,34 @@ public class MoneyTransferServiceTest extends AbstractSpringTest {
 
 	@Before
 	public void setUp() {
+                srcac = new PhysicalAccountInfo();
+		dstac = new JuridicalAccountInfo();
+		transreq = new TransferRequest();
+		
+		mockedAcService = mock(AccountServiceBean.class);
+		mockedStService = mock(StopListServiceStub.class);
+		mockedOpDao = mock(OperationDao.class);
+		
+		srcac.setAccountNumber("11111111111");
+		srcac.setDocumentNumber(StopListServiceStub.DOC_NUM_FOR_OK_STATUS);
+		srcac.setDocumentSeries(StopListServiceStub.DOC_SER_FOR_OK_STATUS);
+		
+		dstac.setInn(StopListServiceStub.INN_FOR_OK_STATUS);
+		dstac.setAccountNumber("66666666666");
+		
+		transreq.setSrcAccount(srcac);
+		transreq.setDstAccount(dstac);
+		
+		StlistInfo = new StopListInfo();
+		StlistInfo.setStatus(StopListStatus.OK);
 	}
 
 	@Test
-	public void transfer() throws TransferException {
+	public void transfer() throws TransferException, OperationDaoException {
 		fail("not implemented yet");
-		// TODO: Необходимо протестировать, что для хорошего перевода всё
-		// работает и вызываются все необходимые методы сервисов
-		// Далее следует закоментированная закотовка
+		// TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		// StopListService mockedStopListService =
 		// mock(StopListServiceStub.class);
 		// AccountService mockedAccountService = mock(AccountServiceBean.class);
@@ -32,5 +52,15 @@ public class MoneyTransferServiceTest extends AbstractSpringTest {
 		//
 		// verify(mockedStopListService).getJuridicalStopListInfo(null);
 		// verify(mockedAccountService).verifyBalance(null);
+
+                when(mockedAcService.verifyBalance(srcac)).thenReturn(true);
+		when(mockedStService.getJuridicalStopListInfo(any(JuridicalStopListRequest.class))).thenReturn(StlistInfo);
+		when(mockedStService.getPhysicalStopListInfo(any(PhysicalStopListRequest.class))).thenReturn(StlistInfo);
+		
+		
+	        moneyTransferService.transfer(transreq);
+		verify(mockedStService).getJuridicalStopListInfo(any(JuridicalStopListRequest.class));
+		verify(mockedAcService).verifyBalance(srcac);
+		verify(mockedOpDao).saveOperation(any(Operation.class));
 	}
 }
