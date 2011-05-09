@@ -12,6 +12,12 @@ public class StopListServiceStub implements StopListService {
 	public static final String INN_FOR_STOP_STATUS = "22222222222222";
 	public static final String INN_FOR_ASKSECURITY_STATUS = "33333333333333";
 
+
+        public static final String DOC_NUM_FOR_OK_STATUS = "44444444444444";
+	public static final String DOC_SER_FOR_OK_STATUS = "55555555555555";
+
+	public static final String DOC_NUM_FOR_STOP_STATUS = "77777777777777";
+	
 	@Override
 	public StopListInfo getJuridicalStopListInfo(
 			JuridicalStopListRequest request) {
@@ -32,7 +38,7 @@ public class StopListServiceStub implements StopListService {
 		//TODO: �����������
                 StopListInfo StListInfo = new StopListInfo();
 		StListInfo.setComment("Comments");
-		if(DOC_NUM_FOR_OK_STATUS.equals(request.getDocumentNumber()) &&                        DOC_SER_FOR_OK_STATUS.equals(request.getDocumentSeries()))
+		if(DOC_NUM_FOR_OK_STATUS.equals(request.getDocumentNumber()) &&                     DOC_SER_FOR_OK_STATUS.equals(request.getDocumentSeries()))
 			StListInfo.setStatus(StopListStatus.OK);
 		else if (DOC_NUM_FOR_STOP_STATUS.equals(request.getDocumentNumber()))
 			StListInfo.setStatus(StopListStatus.STOP);
