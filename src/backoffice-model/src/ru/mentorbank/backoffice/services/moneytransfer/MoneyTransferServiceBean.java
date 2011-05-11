@@ -68,7 +68,7 @@ public class MoneyTransferServiceBean implements MoneyTransferSerice {
 			dstStopListInfo = getStopListInfo(request.getDstAccount());
 		}
 
-		private void saveOperation() {
+		private void saveOperation() throws TransferException {
 			// TODO: ���������� ������� ����� �������� saveOperation � �������
 			// ��������������� ���� ������ �������� operationDao.saveOperation()
 	                Operation op = new Operation();
