@@ -34,6 +34,14 @@ public class MoneyTransferServiceTest extends AbstractSpringTest {
 
 	@Autowired
 	private MoneyTransferServiceBean moneyTransferService;
+        private PhysicalAccountInfo srcac;
+	private JuridicalAccountInfo dstac;
+	private TransferRequest transreq;
+	private AccountService mockedAcService;
+	private StopListService mockedStService;
+	private OperationDao mockedOpDao;
+	private StopListInfo StlistInfo;
+	
 
 	@Before
 	public void setUp() {
