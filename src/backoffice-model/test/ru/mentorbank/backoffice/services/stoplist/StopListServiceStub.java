@@ -46,7 +46,7 @@ public class StopListServiceStub implements StopListService {
 			StListInfo.setStatus(StopListStatus.ASKSECURITY);
 		
 		return StListInfo;
-		return null;
+		
 	}
 
 }
